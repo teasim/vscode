@@ -1,0 +1,192 @@
+{
+  "private": true,
+  "preview": true,
+  "publisher": "yiqilaitech",
+  "displayName": "Teasim (Official)",
+  "name": "teasim",
+  "version": "0.1.1",
+  "description": "A Visual Studio Code extension that provides an IDE-grade support for Teasim projects.",
+  "author": "Billgo <hi@billgo.me>",
+  "license": "MIT",
+  "homepage": "https://vscode.teasim.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teasim/vscode.git"
+  },
+  "bugs": "https://github.com/teasim/vscode/issues",
+  "categories": [
+    "Other"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "icon": "logo.png",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "teasim.reload",
+        "title": "Reload Teasim",
+        "category": "Teasim"
+      },
+      {
+        "command": "teasim.insert-skip-annotation",
+        "title": "Insert `@unocss-skip` for the selection",
+        "category": "Teasim"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Teasim",
+      "properties": {
+        "teasim.disable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable the Teasim extension"
+        },
+        "teasim.languageIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teasim.root": {
+          "type": [
+            "array",
+            "string"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Project root that contains the Teasim configuration file"
+        },
+        "teasim.include": {
+          "type": [
+            "array",
+            "string"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Directory of files to be detected"
+        },
+        "teasim.exclude": {
+          "type": [
+            "array",
+            "string"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Directory of files not to be detected"
+        },
+        "teasim.underline": {
+          "type": "boolean",
+          "default": true,
+          "scope": "language-overridable",
+          "description": "Enable/disable underline decoration for class names"
+        },
+        "teasim.colorPreview": {
+          "type": "boolean",
+          "default": true,
+          "scope": "language-overridable",
+          "description": "Enable/disable color preview decorations"
+        },
+        "teasim.colorPreviewRadius": {
+          "type": "string",
+          "default": "50%",
+          "description": "Radius for color preview"
+        },
+        "teasim.remToPxPreview": {
+          "type": "boolean",
+          "default": true,
+          "scope": "language-overridable",
+          "description": "Enable/disable rem to px preview in hover"
+        },
+        "teasim.remToPxRatio": {
+          "type": "number",
+          "default": 16,
+          "scope": "language-overridable",
+          "description": "Ratio of rem to px"
+        },
+        "teasim.selectionStyle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable selection style decorations"
+        },
+        "teasim.strictAnnotationMatch": {
+          "type": "boolean",
+          "default": false,
+          "description": "Be strict about where to show annotations"
+        },
+        "teasim.autocomplete.matchType": {
+          "type": "string",
+          "default": "prefix",
+          "enum": [
+            "prefix",
+            "fuzzy"
+          ],
+          "description": "The matching type for autocomplete"
+        },
+        "teasim.autocomplete.strict": {
+          "type": "boolean",
+          "default": false,
+          "description": "Be strict about where to show autocomplete"
+        },
+        "teasim.autocomplete.maxItems": {
+          "type": "number",
+          "default": 1000,
+          "description": "The maximum number of items to show in autocomplete"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "prepublishOnly": "bun run build",
+    "build": "rimraf dist && tsdown",
+    "develop": "esno ./scripts/develop.ts && tsdown --watch src",
+    "prepare": "bun run update",
+    "publish": "esno ./scripts/publish.ts",
+    "update": "vscode-ext-gen --scope=teasim --output src/generated/meta.ts",
+    "pack": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.4",
+    "@devjskit/biome-config": "^0.2.1",
+    "@devjskit/copy-files": "^2.0.0",
+    "@devjskit/cross-env": "^1.0.0",
+    "@devjskit/kill-port": "^1.0.0",
+    "@devjskit/rimraf": "^1.0.0",
+    "@happy-dom/global-registrator": "^20.7.0",
+    "@jridgewell/remapping": "^2.3.5",
+    "@types/bun": "^1.3.9",
+    "@types/execa": "^2.0.2",
+    "@types/fs-extra": "^11.0.4",
+    "@types/vscode": "^1.109.0",
+    "@types/web": "^0.0.338",
+    "@unocss/autocomplete": "^66.6.0",
+    "@unocss/config": "^66.6.0",
+    "@unocss/core": "^66.6.0",
+    "@unocss/extractor-arbitrary-variants": "^66.6.0",
+    "@unocss/preset-wind3": "^66.6.0",
+    "esno": "^4.8.0",
+    "find-up": "^8.0.0",
+    "fs-extra": "^11.3.3",
+    "jiti": "^2.6.1",
+    "magic-string": "^0.30.21",
+    "prettier": "^3.8.1",
+    "tinyglobby": "^0.2.15",
+    "tsdown": "^0.20.3",
+    "unconfig": "^7.5.0",
+    "unplugin-utils": "^0.3.1",
+    "vscode-ext-gen": "^1.6.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "restricted"
+  }
+}
