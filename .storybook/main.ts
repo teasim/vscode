@@ -3,10 +3,10 @@ import type { StorybookConfig } from "storybook-react-rsbuild";
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 
-  addons: ["@storybook/addon-links"],
+  addons: ["@storybook/addon-themes"],
 
   docs: {
-    defaultName: "Documentation",
+    defaultName: "@teasim/styles",
   },
 
   typescript: {
@@ -19,9 +19,11 @@ const config: StorybookConfig = {
     options: {},
   },
 
-  previewHead: (head) => `
-    ${head}
-    ${"<style>.sb-show-main {background: var(--color-background);}</style>"}
+  previewBody: (body) => `
+    <style>
+      .sb-show-main {background: var(--color-background);}
+    </style>
+    ${body}
   `,
 };
 

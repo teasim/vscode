@@ -1,18 +1,22 @@
-import { withThemeByDataAttribute } from "@storybook/addon-themes";
-import type { Preview } from "@storybook/react";
+import { withThemeByClassName } from "@storybook/addon-themes";
+import "../index.css";
 
 export const decorators = [
-  withThemeByDataAttribute({
+  withThemeByClassName({
     themes: {
       light: "light",
       dark: "dark",
     },
     defaultTheme: "light",
   }),
-  (Story: any) => <Story />,
+  (Story: any) => (
+    <div className="themes" data-has-background="true" data-scaling="100%" data-primary-color="teal" data-neutral-color="gray">
+      <Story />
+    </div>
+  ),
 ];
 
-const preview: Preview = {
+const preview = {
   parameters: {
     layout: "padded",
     actions: {
@@ -28,10 +32,11 @@ const preview: Preview = {
       },
     },
     options: {
-      rightPanelWidth: 500,
+      rightPanelWidth: 0,
       panelPosition: "right",
       storySort: {
-        order: ["layout", [], "typography", [], "controls", [], "components", [], "utilities", []],
+        order: ["*"],
+        method: "alphabetical",
       },
     },
     msw: {

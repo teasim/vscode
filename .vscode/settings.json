@@ -4,6 +4,7 @@
 	"json.format.enable": true,
 	"editor.codeActionsOnSave": {
 		"quickfix.biome": "explicit",
+		"source.fixAll.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
 	},
 	"[typescript]": {
@@ -11,5 +12,17 @@
 	},
 	"[json]": {
 		"editor.defaultFormatter": "biomejs.biome"
-	}
+	},
+	"unocss.disable": false,
+	"unocss.underline": true,
+	"unocss.languageIds": [
+		"html",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"vue",
+		"astro"
+	],
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
