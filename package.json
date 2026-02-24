@@ -141,6 +141,17 @@
           "type": "number",
           "default": 1000,
           "description": "The maximum number of items to show in autocomplete"
+        },
+        "teasim.autocomplete.classFunctions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "defineVariants",
+            "mergeClass"
+          ],
+          "description": "Function names whose string arguments should support utility autocomplete"
         }
       }
     }

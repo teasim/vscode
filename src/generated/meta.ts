@@ -51,6 +51,7 @@ export type ConfigKey =
   | "teasim.autocomplete.matchType"
   | "teasim.autocomplete.strict"
   | "teasim.autocomplete.maxItems"
+  | "teasim.autocomplete.classFunctions"
 
 export interface ConfigKeyTypeMap {
   "teasim.disable": boolean,
@@ -68,6 +69,7 @@ export interface ConfigKeyTypeMap {
   "teasim.autocomplete.matchType": ("prefix" | "fuzzy"),
   "teasim.autocomplete.strict": boolean,
   "teasim.autocomplete.maxItems": number,
+  "teasim.autocomplete.classFunctions": string[],
 }
 
 export interface ConfigShorthandMap {
@@ -86,6 +88,7 @@ export interface ConfigShorthandMap {
   autocompleteMatchType: "teasim.autocomplete.matchType",
   autocompleteStrict: "teasim.autocomplete.strict",
   autocompleteMaxItems: "teasim.autocomplete.maxItems",
+  autocompleteClassFunctions: "teasim.autocomplete.classFunctions",
 }
 
 export interface ConfigShorthandTypeMap {
@@ -104,6 +107,7 @@ export interface ConfigShorthandTypeMap {
   autocompleteMatchType: ("prefix" | "fuzzy"),
   autocompleteStrict: boolean,
   autocompleteMaxItems: number,
+  autocompleteClassFunctions: string[],
 }
 
 export interface ConfigItem<T extends keyof ConfigKeyTypeMap> {
@@ -266,6 +270,16 @@ export const configs = {
     key: "teasim.autocomplete.maxItems",
     default: 1000,
   } as ConfigItem<"teasim.autocomplete.maxItems">,
+  /**
+   * Function names whose string arguments should support utility autocomplete
+   * @key `teasim.autocomplete.classFunctions`
+   * @default `["defineVariants"]`
+   * @type `array`
+   */
+  autocompleteClassFunctions: {
+    key: "teasim.autocomplete.classFunctions",
+    default: ["defineVariants"],
+  } as ConfigItem<"teasim.autocomplete.classFunctions">,
 }
 
 export interface ScopedConfigKeyTypeMap {
@@ -284,6 +298,7 @@ export interface ScopedConfigKeyTypeMap {
   "autocomplete.matchType": ("prefix" | "fuzzy"),
   "autocomplete.strict": boolean,
   "autocomplete.maxItems": number,
+  "autocomplete.classFunctions": string[],
 }
 
 export const scopedConfigs = {
@@ -304,6 +319,7 @@ export const scopedConfigs = {
     "autocomplete.matchType": "prefix",
     "autocomplete.strict": false,
     "autocomplete.maxItems": 1000,
+    "autocomplete.classFunctions": ["defineVariants"],
   } satisfies ScopedConfigKeyTypeMap,
 }
 
@@ -325,6 +341,7 @@ export interface NestedConfigs {
       "matchType": ("prefix" | "fuzzy"),
       "strict": boolean,
       "maxItems": number,
+      "classFunctions": string[],
     },
   },
 }
@@ -346,6 +363,7 @@ export interface NestedScopedConfigs {
     "matchType": ("prefix" | "fuzzy"),
     "strict": boolean,
     "maxItems": number,
+    "classFunctions": string[],
   },
 }
 

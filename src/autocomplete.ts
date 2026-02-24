@@ -21,6 +21,202 @@ class UnoCompletionItem extends CompletionItem {
   }
 }
 
+const whitespaceRE = /\s/;
+const functionNameRE = /^[$A-Z_a-z][$\w]*$/;
+
+interface StringRange {
+  start: number;
+  end: number;
+}
+
+interface FunctionStringContext {
+  start: number;
+  end: number;
+  query: string;
+}
+
+function isEscaped(code: string, index: number) {
+  let slashCount = 0;
+  for (let i = index - 1; i >= 0 && code[i] === "\\"; i--) {
+    slashCount++;
+  }
+  return slashCount % 2 === 1;
+}
+
+function findStringRangeAtOffset(code: string, offset: number): StringRange | undefined {
+  type ParserState = "code" | "line-comment" | "block-comment" | "string";
+  let state: ParserState = "code";
+  let quote: "'" | '"' | "`" | null = null;
+  let stringStart = -1;
+
+  for (let i = 0; i < code.length; i++) {
+    const current = code[i];
+    const next = code[i + 1];
+
+    if (state === "line-comment") {
+      if (current === "\n") state = "code";
+      continue;
+    }
+
+    if (state === "block-comment") {
+      if (current === "*" && next === "/") {
+        state = "code";
+        i++;
+      }
+      continue;
+    }
+
+    if (state === "string") {
+      if (quote && current === quote && !isEscaped(code, i)) {
+        const inRange = offset > stringStart && offset <= i;
+        const range = inRange
+          ? {
+              start: stringStart + 1,
+              end: i,
+            }
+          : undefined;
+        state = "code";
+        quote = null;
+        stringStart = -1;
+        if (range) return range;
+      }
+      continue;
+    }
+
+    if (current === "/" && next === "/") {
+      state = "line-comment";
+      i++;
+      continue;
+    }
+
+    if (current === "/" && next === "*") {
+      state = "block-comment";
+      i++;
+      continue;
+    }
+
+    if ((current === '"' || current === "'" || current === "`") && !isEscaped(code, i)) {
+      state = "string";
+      quote = current;
+      stringStart = i;
+    }
+  }
+
+  if (state === "string" && stringStart >= 0 && offset > stringStart && offset <= code.length) {
+    return {
+      start: stringStart + 1,
+      end: code.length,
+    };
+  }
+}
+
+function escapeRegExp(input: string) {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getLastFunctionCallOpenParen(code: string, beforeIndex: number, functionNames: string[]) {
+  let lastOpenParen = -1;
+  for (const name of functionNames) {
+    const re = new RegExp(`\\b${escapeRegExp(name)}\\s*\\(`, "g");
+    for (const match of code.matchAll(re)) {
+      if (match.index == null || match.index >= beforeIndex) continue;
+      const matched = match[0];
+      const openParenIndex = match.index + matched.lastIndexOf("(");
+      if (openParenIndex < beforeIndex && openParenIndex > lastOpenParen) {
+        lastOpenParen = openParenIndex;
+      }
+    }
+  }
+  return lastOpenParen;
+}
+
+function isInsideFunctionCall(code: string, openParenIndex: number, targetIndex: number) {
+  type ParserState = "code" | "line-comment" | "block-comment" | "string";
+  let state: ParserState = "code";
+  let quote: "'" | '"' | "`" | null = null;
+  let depth = 1;
+
+  for (let i = openParenIndex + 1; i < targetIndex; i++) {
+    const current = code[i];
+    const next = code[i + 1];
+
+    if (state === "line-comment") {
+      if (current === "\n") state = "code";
+      continue;
+    }
+
+    if (state === "block-comment") {
+      if (current === "*" && next === "/") {
+        state = "code";
+        i++;
+      }
+      continue;
+    }
+
+    if (state === "string") {
+      if (quote && current === quote && !isEscaped(code, i)) {
+        state = "code";
+        quote = null;
+      }
+      continue;
+    }
+
+    if (current === "/" && next === "/") {
+      state = "line-comment";
+      i++;
+      continue;
+    }
+
+    if (current === "/" && next === "*") {
+      state = "block-comment";
+      i++;
+      continue;
+    }
+
+    if ((current === '"' || current === "'" || current === "`") && !isEscaped(code, i)) {
+      state = "string";
+      quote = current;
+      continue;
+    }
+
+    if (current === "(") {
+      depth++;
+      continue;
+    }
+
+    if (current === ")") {
+      depth--;
+      if (depth === 0) return false;
+    }
+  }
+  return depth > 0;
+}
+
+function getFunctionStringContext(code: string, offset: number, functionNames: string[]): FunctionStringContext | undefined {
+  const targetFunctions = functionNames.map((name) => name.trim()).filter((name) => name && functionNameRE.test(name));
+  if (!targetFunctions.length) return;
+
+  const stringRange = findStringRangeAtOffset(code, offset);
+  if (!stringRange) return;
+
+  const quoteIndex = stringRange.start - 1;
+  const openParenIndex = getLastFunctionCallOpenParen(code, quoteIndex, targetFunctions);
+  if (openParenIndex < 0 || !isInsideFunctionCall(code, openParenIndex, quoteIndex)) return;
+
+  const cursor = Math.min(Math.max(offset, stringRange.start), stringRange.end);
+  let tokenStart = cursor;
+  let tokenEnd = cursor;
+
+  while (tokenStart > stringRange.start && !whitespaceRE.test(code[tokenStart - 1])) tokenStart--;
+  while (tokenEnd < stringRange.end && !whitespaceRE.test(code[tokenEnd])) tokenEnd++;
+
+  return {
+    start: tokenStart,
+    end: tokenEnd,
+    query: code.slice(tokenStart, cursor),
+  };
+}
+
 export async function registerAutoComplete(loader: ContextLoader) {
   const autoCompletes = new Map<UnocssPluginContext, UnocssAutocomplete>();
   const config = getConfig();
@@ -58,14 +254,41 @@ export async function registerAutoComplete(loader: ContextLoader) {
     return new MarkdownString(await getPrettiedMarkdown(uno, util, remToPxRatio));
   }
 
-  async function getSuggestionResult({ ctx, code, id, doc, position }: { ctx: UnocssPluginContext; code: string; id: string; doc: TextDocument; position: Position }) {
+  async function getSuggestionResult({
+    ctx,
+    code,
+    id,
+    doc,
+    position,
+    functionStringContext,
+  }: {
+    ctx: UnocssPluginContext;
+    code: string;
+    id: string;
+    doc: TextDocument;
+    position: Position;
+    functionStringContext?: FunctionStringContext;
+  }) {
     const isPug = isVueWithPug(code, id);
+    const autoComplete = getAutocomplete(ctx);
+    if (functionStringContext) {
+      const suggestions = await autoComplete.suggest(functionStringContext.query);
+      if (suggestions.length) {
+        return {
+          suggestions: suggestions.map((v) => [v, v] as [string, string]),
+          resolveReplacement: (suggestion: string) => ({
+            start: functionStringContext.start,
+            end: functionStringContext.end,
+            replacement: suggestion,
+          }),
+        };
+      }
+    }
+
     // If isPug is true, then we should not recognize it as a cssId.
     if (!ctx.filter(code, id) && !isCssId(id) && !isPug) return null;
 
     try {
-      const autoComplete = getAutocomplete(ctx);
-
       const cursorPosition = doc.offsetAt(position);
       let result: SuggestResult | undefined;
 
@@ -117,7 +340,9 @@ export async function registerAutoComplete(loader: ContextLoader) {
       const code = doc.getText();
       if (!code) return null;
 
-      if (config.autocompleteStrict && !shouldProvideAutocomplete(code, id, offset)) return;
+      const functionStringContext = getFunctionStringContext(code, offset, config.autocompleteClassFunctions || []);
+
+      if (config.autocompleteStrict && !functionStringContext && !shouldProvideAutocomplete(code, id, offset)) return;
 
       try {
         const result = await getSuggestionResult({
@@ -126,6 +351,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
           id,
           doc,
           position,
+          functionStringContext,
         });
 
         if (!result) return;
