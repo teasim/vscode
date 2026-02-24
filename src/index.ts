@@ -32,7 +32,7 @@ export async function activate(ext: ExtensionContext) {
     return;
   }
 
-  const status = window.createStatusBarItem(StatusBarAlignment.Right, 200);
+  const status: any = window.createStatusBarItem(StatusBarAlignment.Right, 200);
   status.text = displayName;
 
   const root = config.root;

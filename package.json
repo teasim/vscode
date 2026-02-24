@@ -1,10 +1,11 @@
 {
   "name": "@teasim/vscode",
   "version": "0.1.0-alpha.0",
-  "description": "a vscode plugin for teasim projects.",
+  "description": "a vscode plugin for teasim styles projects.",
+  "publisher": "billgo",
   "author": "Billgo <hi@billgo.me>",
   "license": "MIT",
-  "homepage": "https://teasim.com",
+  "homepage": "https://vscode.teasim.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/teasim/vscode.git"
@@ -13,6 +14,7 @@
   "categories": [
     "Other"
   ],
+  "type": "module",
   "main": "./dist/index.cjs",
   "preview": true,
   "icon": "res/logo.png",
@@ -153,6 +155,7 @@
     "@jridgewell/remapping": "^2.3.5",
     "@unocss/config": "^66.6.0",
     "@unocss/extractor-arbitrary-variants": "^66.6.0",
+    "fs-extra": "^11.3.3",
     "magic-string": "^0.30.21",
     "tinyglobby": "^0.2.15"
   },

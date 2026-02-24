@@ -4,9 +4,8 @@ import type { UnocssPluginContext, UserConfig, UserConfigDefaults } from "@unocs
 import { createNanoEvents, notNull } from "@unocss/core";
 import presetWind3 from "@unocss/preset-wind3";
 import { exists } from "fs-extra";
-import { sourceObjectFields, sourcePluginFactory } from "unconfig/presets";
+import { sourcePluginFactory } from "unconfig/presets";
 import type { ExtensionContext, StatusBarItem } from "vscode";
-import { resolveOptions as resolveNuxtOptions } from "../../nuxt/src/options";
 import { registerAnnotations } from "./annotation";
 import { registerAutoComplete } from "./autocomplete";
 import { registerDocumentCacheCleaner } from "./getMatched";
@@ -145,13 +144,8 @@ export class ContextLoader {
             files: ["astro.config"],
             targetModule: "unocss/astro",
           }),
-          sourceObjectFields({
-            files: "nuxt.config",
-            fields: "unocss",
-          }),
         ],
         (result) => {
-          if (result.sources.some((s) => s.includes("nuxt.config"))) resolveNuxtOptions(result.config);
           result.config.details = true;
         },
       );
