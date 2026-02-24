@@ -273,12 +273,12 @@ export const configs = {
   /**
    * Function names whose string arguments should support utility autocomplete
    * @key `teasim.autocomplete.classFunctions`
-   * @default `["defineVariants"]`
+   * @default `["defineVariants","mergeClass"]`
    * @type `array`
    */
   autocompleteClassFunctions: {
     key: "teasim.autocomplete.classFunctions",
-    default: ["defineVariants"],
+    default: ["defineVariants","mergeClass"],
   } as ConfigItem<"teasim.autocomplete.classFunctions">,
 }
 
@@ -319,7 +319,7 @@ export const scopedConfigs = {
     "autocomplete.matchType": "prefix",
     "autocomplete.strict": false,
     "autocomplete.maxItems": 1000,
-    "autocomplete.classFunctions": ["defineVariants"],
+    "autocomplete.classFunctions": ["defineVariants","mergeClass"],
   } satisfies ScopedConfigKeyTypeMap,
 }
 

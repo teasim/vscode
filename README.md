@@ -56,7 +56,7 @@ Autocomplete suggestions are available in supported languages with configurable 
 | `teasim.autocomplete.matchType` | `"prefix" \| "fuzzy"` | `"prefix"` | Autocomplete matching strategy |
 | `teasim.autocomplete.strict` | `boolean` | `false` | Restrict autocomplete to stricter matching context |
 | `teasim.autocomplete.maxItems` | `number` | `1000` | Maximum autocomplete items returned |
-| `teasim.autocomplete.classFunctions` | `string[]` | `["defineVariants"]` | Function names whose string arguments should support utility autocomplete |
+| `teasim.autocomplete.classFunctions` | `string[]` | `["defineVariants", "mergeClass"]` | Function names whose string arguments should support utility autocomplete |
 
 Recommended baseline:
 
@@ -65,7 +65,7 @@ Recommended baseline:
   "teasim.strictAnnotationMatch": true,
   "teasim.autocomplete.strict": true,
   "teasim.autocomplete.matchType": "prefix",
-  "teasim.autocomplete.classFunctions": ["defineVariants"],
+  "teasim.autocomplete.classFunctions": ["defineVariants", "mergeClass"],
   "teasim.remToPxRatio": 16
 }
 ```
