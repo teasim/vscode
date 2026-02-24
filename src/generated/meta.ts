@@ -4,7 +4,7 @@
 // Meta info
 export const publisher = "yiqilaitech"
 export const name = "teasim"
-export const version = "0.1.1"
+export const version = "0.1.2"
 export const displayName = "Teasim (Official)"
 export const description = "A Visual Studio Code extension that provides an IDE-grade support for Teasim projects."
 export const extensionId = `${publisher}.${name}`

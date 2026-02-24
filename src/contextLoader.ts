@@ -2,7 +2,6 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 import type { UnocssPluginContext, UserConfig, UserConfigDefaults } from "@unocss/core";
 import { createNanoEvents, notNull } from "@unocss/core";
-import presetWind3 from "@unocss/preset-wind3";
 import { exists } from "fs-extra";
 import { sourcePluginFactory } from "unconfig/presets";
 import type { ExtensionContext, StatusBarItem } from "vscode";
@@ -27,9 +26,7 @@ export class ContextLoader {
 
   private fileContextCache = new Map<string, UnocssPluginContext<UserConfig<any>> | null>();
   private configExistsCache = new Map<string, boolean>();
-  private defaultUnocssConfig: UserConfigDefaults = {
-    presets: [presetWind3()],
-  };
+  private defaultUnocssConfig: UserConfigDefaults = {};
 
   public events = createNanoEvents<{
     reload: () => void;
