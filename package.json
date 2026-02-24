@@ -2,7 +2,7 @@
   "name": "@teasim/vscode",
   "version": "0.1.0-alpha.0",
   "description": "a vscode plugin for teasim styles projects.",
-  "publisher": "billgo",
+  "publisher": "yiqilaitech",
   "author": "Billgo <hi@billgo.me>",
   "license": "MIT",
   "homepage": "https://vscode.teasim.com",
