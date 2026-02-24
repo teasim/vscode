@@ -23,6 +23,9 @@ Select multiple utilities and hover to see their combined CSS result.
 5. Utility autocomplete
 Autocomplete suggestions are available in supported languages with configurable matching behavior.
 
+6. Class function string support
+Utilities inside configured class functions (for example `defineVariants(...)` and `mergeClass(...)`) support autocomplete, underline annotation, and hover CSS preview.
+
 ## Quick Start
 
 1. Open a workspace that contains UnoCSS/Teasim config.
@@ -56,7 +59,7 @@ Autocomplete suggestions are available in supported languages with configurable 
 | `teasim.autocomplete.matchType` | `"prefix" \| "fuzzy"` | `"prefix"` | Autocomplete matching strategy |
 | `teasim.autocomplete.strict` | `boolean` | `false` | Restrict autocomplete to stricter matching context |
 | `teasim.autocomplete.maxItems` | `number` | `1000` | Maximum autocomplete items returned |
-| `teasim.autocomplete.classFunctions` | `string[]` | `["defineVariants", "mergeClass"]` | Function names whose string arguments should support utility autocomplete |
+| `teasim.autocomplete.classFunctions` | `string[]` | `["defineVariants", "mergeClass"]` | Function names whose string arguments should support utility autocomplete, underline annotation, and hover preview |
 
 Recommended baseline:
 
@@ -111,6 +114,15 @@ Enabled by default for:
 
 You can extend support using `teasim.languageIds`.
 
+## JS/TS File Matching
+
+For performance, utility detection in JavaScript/TypeScript defaults to:
+
+- `*.jsx` and `*.tsx`
+- `*.props.js` and `*.props.ts`
+
+If you need hover/annotation in other `.js` / `.ts` files, add an include annotation (`@unocss-include`) or widen `content.pipeline.include` in your UnoCSS config.
+
 ## Development
 
 Prerequisites:
@@ -141,7 +153,7 @@ bun run update
 ## Troubleshooting
 
 1. No hover or annotation appears
-Check that your project config is detected (`uno.config.*`/`unocss.config.*`), then run `Teasim: Reload Teasim`.
+Check that your project config is detected (`uno.config.*`/`unocss.config.*`), then run `Teasim: Reload Teasim`. For JS/TS files, also confirm the filename matches the default scope (`*.jsx`, `*.tsx`, `*.props.js`, `*.props.ts`) or explicitly include the file.
 
 2. Suggestions are too noisy
 Enable `teasim.autocomplete.strict` and `teasim.strictAnnotationMatch`.
@@ -151,9 +163,9 @@ Add it to `teasim.languageIds`.
 
 ## Links
 
-- Homepage: https://vscode.teasim.com
-- Repository: https://github.com/teasim/vscode
-- Issues: https://github.com/teasim/vscode/issues
+- Homepage: <https://vscode.teasim.com>
+- Repository: <https://github.com/teasim/vscode>
+- Issues: <https://github.com/teasim/vscode/issues>
 
 ## License
 
