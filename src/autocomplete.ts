@@ -192,7 +192,7 @@ function isInsideFunctionCall(code: string, openParenIndex: number, targetIndex:
   return depth > 0;
 }
 
-function getFunctionStringContext(code: string, offset: number, functionNames: string[]): FunctionStringContext | undefined {
+function getFunctionStringContextAtOffset(code: string, offset: number, functionNames: string[]): FunctionStringContext | undefined {
   const targetFunctions = functionNames.map((name) => name.trim()).filter((name) => name && functionNameRE.test(name));
   if (!targetFunctions.length) return;
 
@@ -254,21 +254,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
     return new MarkdownString(await getPrettiedMarkdown(uno, util, remToPxRatio));
   }
 
-  async function getSuggestionResult({
-    ctx,
-    code,
-    id,
-    doc,
-    position,
-    functionStringContext,
-  }: {
-    ctx: UnocssPluginContext;
-    code: string;
-    id: string;
-    doc: TextDocument;
-    position: Position;
-    functionStringContext?: FunctionStringContext;
-  }) {
+  async function getSuggestionResult({ ctx, code, id, doc, position, functionStringContext }: { ctx: UnocssPluginContext; code: string; id: string; doc: TextDocument; position: Position; functionStringContext?: FunctionStringContext }) {
     const isPug = isVueWithPug(code, id);
     const autoComplete = getAutocomplete(ctx);
     if (functionStringContext) {
@@ -340,7 +326,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
       const code = doc.getText();
       if (!code) return null;
 
-      const functionStringContext = getFunctionStringContext(code, offset, config.autocompleteClassFunctions || []);
+      const functionStringContext = getFunctionStringContextAtOffset(code, offset, config.autocompleteClassFunctions || []);
 
       if (config.autocompleteStrict && !functionStringContext && !shouldProvideAutocomplete(code, id, offset)) return;
 
@@ -412,7 +398,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
       loader.ext.subscriptions.push(await registerProvider());
     }),
 
-    config.watchChanged(["autocompleteMatchType", "autocompleteStrict", "remToPxRatio", "remToPxPreview"], () => {
+    config.watchChanged(["autocompleteMatchType", "autocompleteStrict", "autocompleteClassFunctions", "remToPxRatio", "remToPxPreview"], () => {
       autoCompletes.clear();
     }),
 
