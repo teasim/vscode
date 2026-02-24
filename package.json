@@ -1,8 +1,9 @@
 {
+  "publisher": "yiqilaitech",
+  "displayName": "Teasim",
   "name": "@teasim/vscode",
   "version": "0.1.0-alpha.0",
-  "description": "a vscode plugin for teasim styles projects.",
-  "publisher": "yiqilaitech",
+  "description": "Teasim styles support for Visual Studio Code",
   "author": "Billgo <hi@billgo.me>",
   "license": "MIT",
   "homepage": "https://vscode.teasim.com",
@@ -27,32 +28,32 @@
   "contributes": {
     "commands": [
       {
-        "command": "unocss.reload",
-        "title": "Reload UnoCSS",
-        "category": "UnoCSS"
+        "command": "teasim.reload",
+        "title": "Reload Teasim",
+        "category": "Teasim"
       },
       {
-        "command": "unocss.insert-skip-annotation",
-        "title": "Insert `@unocss-skip` for the selection",
-        "category": "UnoCSS"
+        "command": "teasim.insert-skip-annotation",
+        "title": "Insert `@teasim-skip` for the selection",
+        "category": "Teasim"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "UnoCSS",
+      "title": "Teasim",
       "properties": {
-        "unocss.disable": {
+        "teasim.disable": {
           "type": "boolean",
           "default": false,
-          "description": "Disable the UnoCSS extension"
+          "description": "Disable the Teasim extension"
         },
-        "unocss.languageIds": {
+        "teasim.languageIds": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "unocss.root": {
+        "teasim.root": {
           "type": [
             "array",
             "string"
@@ -60,9 +61,9 @@
           "items": {
             "type": "string"
           },
-          "description": "Project root that contains the UnoCSS configuration file"
+          "description": "Project root that contains the Teasim configuration file"
         },
-        "unocss.include": {
+        "teasim.include": {
           "type": [
             "array",
             "string"
@@ -72,7 +73,7 @@
           },
           "description": "Directory of files to be detected"
         },
-        "unocss.exclude": {
+        "teasim.exclude": {
           "type": [
             "array",
             "string"
@@ -82,46 +83,46 @@
           },
           "description": "Directory of files not to be detected"
         },
-        "unocss.underline": {
+        "teasim.underline": {
           "type": "boolean",
           "default": true,
           "scope": "language-overridable",
           "description": "Enable/disable underline decoration for class names"
         },
-        "unocss.colorPreview": {
+        "teasim.colorPreview": {
           "type": "boolean",
           "default": true,
           "scope": "language-overridable",
           "description": "Enable/disable color preview decorations"
         },
-        "unocss.colorPreviewRadius": {
+        "teasim.colorPreviewRadius": {
           "type": "string",
           "default": "50%",
           "description": "Radius for color preview"
         },
-        "unocss.remToPxPreview": {
+        "teasim.remToPxPreview": {
           "type": "boolean",
           "default": true,
           "scope": "language-overridable",
           "description": "Enable/disable rem to px preview in hover"
         },
-        "unocss.remToPxRatio": {
+        "teasim.remToPxRatio": {
           "type": "number",
           "default": 16,
           "scope": "language-overridable",
           "description": "Ratio of rem to px"
         },
-        "unocss.selectionStyle": {
+        "teasim.selectionStyle": {
           "type": "boolean",
           "default": true,
           "description": "Enable/disable selection style decorations"
         },
-        "unocss.strictAnnotationMatch": {
+        "teasim.strictAnnotationMatch": {
           "type": "boolean",
           "default": false,
           "description": "Be strict about where to show annotations"
         },
-        "unocss.autocomplete.matchType": {
+        "teasim.autocomplete.matchType": {
           "type": "string",
           "default": "prefix",
           "enum": [
@@ -130,12 +131,12 @@
           ],
           "description": "The matching type for autocomplete"
         },
-        "unocss.autocomplete.strict": {
+        "teasim.autocomplete.strict": {
           "type": "boolean",
           "default": false,
           "description": "Be strict about where to show autocomplete"
         },
-        "unocss.autocomplete.maxItems": {
+        "teasim.autocomplete.maxItems": {
           "type": "number",
           "default": 1000,
           "description": "The maximum number of items to show in autocomplete"
@@ -146,9 +147,9 @@
   "scripts": {
     "prepublishOnly": "bun run build",
     "build": "rimraf dist && tsdown",
-    "start": "esno ./scripts/dev.ts && tsdown --watch src",
+    "develop": "esno ./scripts/dev.ts && tsdown --watch src",
     "publish": "esno ./scripts/publish.ts",
-    "update": "vscode-ext-gen --scope=unocss --output src/generated/meta.ts",
+    "update": "vscode-ext-gen --scope=teasim --output src/generated/meta.ts",
     "pack": "vsce package --no-dependencies"
   },
   "dependencies": {

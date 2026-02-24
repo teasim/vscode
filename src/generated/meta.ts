@@ -2,90 +2,90 @@
 // @see https://github.com/antfu/vscode-ext-gen
 
 // Meta info
-export const publisher = "billgo"
+export const publisher = "yiqilaitech"
 export const name = "@teasim/vscode"
 export const version = "0.1.0-alpha.0"
-export const displayName = undefined
-export const description = "a vscode plugin for teasim styles projects."
+export const displayName = "Teasim"
+export const description = "Teasim styles support for Visual Studio Code"
 export const extensionId = `${publisher}.${name}`
 
 /**
  * Type union of all commands
  */
 export type CommandKey =
-  | "unocss.reload"
-  | "unocss.insert-skip-annotation"
+  | "teasim.reload"
+  | "teasim.insert-skip-annotation"
 
 /**
- * Commands map registered by `billgo.@teasim/vscode`
+ * Commands map registered by `yiqilaitech.@teasim/vscode`
  */
 export const commands = {
   /**
-   * Reload UnoCSS
-   * @value `unocss.reload`
+   * Reload Teasim
+   * @value `teasim.reload`
    */
-  reload: "unocss.reload",
+  reload: "teasim.reload",
   /**
-   * Insert `@unocss-skip` for the selection
-   * @value `unocss.insert-skip-annotation`
+   * Insert `@teasim-skip` for the selection
+   * @value `teasim.insert-skip-annotation`
    */
-  insertSkipAnnotation: "unocss.insert-skip-annotation",
+  insertSkipAnnotation: "teasim.insert-skip-annotation",
 } satisfies Record<string, CommandKey>
 
 /**
  * Type union of all configs
  */
 export type ConfigKey =
-  | "unocss.disable"
-  | "unocss.languageIds"
-  | "unocss.root"
-  | "unocss.include"
-  | "unocss.exclude"
-  | "unocss.underline"
-  | "unocss.colorPreview"
-  | "unocss.colorPreviewRadius"
-  | "unocss.remToPxPreview"
-  | "unocss.remToPxRatio"
-  | "unocss.selectionStyle"
-  | "unocss.strictAnnotationMatch"
-  | "unocss.autocomplete.matchType"
-  | "unocss.autocomplete.strict"
-  | "unocss.autocomplete.maxItems"
+  | "teasim.disable"
+  | "teasim.languageIds"
+  | "teasim.root"
+  | "teasim.include"
+  | "teasim.exclude"
+  | "teasim.underline"
+  | "teasim.colorPreview"
+  | "teasim.colorPreviewRadius"
+  | "teasim.remToPxPreview"
+  | "teasim.remToPxRatio"
+  | "teasim.selectionStyle"
+  | "teasim.strictAnnotationMatch"
+  | "teasim.autocomplete.matchType"
+  | "teasim.autocomplete.strict"
+  | "teasim.autocomplete.maxItems"
 
 export interface ConfigKeyTypeMap {
-  "unocss.disable": boolean,
-  "unocss.languageIds": (string[] | undefined),
-  "unocss.root": (string[] | string | undefined),
-  "unocss.include": (string[] | string | undefined),
-  "unocss.exclude": (string[] | string | undefined),
-  "unocss.underline": boolean,
-  "unocss.colorPreview": boolean,
-  "unocss.colorPreviewRadius": string,
-  "unocss.remToPxPreview": boolean,
-  "unocss.remToPxRatio": number,
-  "unocss.selectionStyle": boolean,
-  "unocss.strictAnnotationMatch": boolean,
-  "unocss.autocomplete.matchType": ("prefix" | "fuzzy"),
-  "unocss.autocomplete.strict": boolean,
-  "unocss.autocomplete.maxItems": number,
+  "teasim.disable": boolean,
+  "teasim.languageIds": (string[] | undefined),
+  "teasim.root": (string[] | string | undefined),
+  "teasim.include": (string[] | string | undefined),
+  "teasim.exclude": (string[] | string | undefined),
+  "teasim.underline": boolean,
+  "teasim.colorPreview": boolean,
+  "teasim.colorPreviewRadius": string,
+  "teasim.remToPxPreview": boolean,
+  "teasim.remToPxRatio": number,
+  "teasim.selectionStyle": boolean,
+  "teasim.strictAnnotationMatch": boolean,
+  "teasim.autocomplete.matchType": ("prefix" | "fuzzy"),
+  "teasim.autocomplete.strict": boolean,
+  "teasim.autocomplete.maxItems": number,
 }
 
 export interface ConfigShorthandMap {
-  disable: "unocss.disable",
-  languageIds: "unocss.languageIds",
-  root: "unocss.root",
-  include: "unocss.include",
-  exclude: "unocss.exclude",
-  underline: "unocss.underline",
-  colorPreview: "unocss.colorPreview",
-  colorPreviewRadius: "unocss.colorPreviewRadius",
-  remToPxPreview: "unocss.remToPxPreview",
-  remToPxRatio: "unocss.remToPxRatio",
-  selectionStyle: "unocss.selectionStyle",
-  strictAnnotationMatch: "unocss.strictAnnotationMatch",
-  autocompleteMatchType: "unocss.autocomplete.matchType",
-  autocompleteStrict: "unocss.autocomplete.strict",
-  autocompleteMaxItems: "unocss.autocomplete.maxItems",
+  disable: "teasim.disable",
+  languageIds: "teasim.languageIds",
+  root: "teasim.root",
+  include: "teasim.include",
+  exclude: "teasim.exclude",
+  underline: "teasim.underline",
+  colorPreview: "teasim.colorPreview",
+  colorPreviewRadius: "teasim.colorPreviewRadius",
+  remToPxPreview: "teasim.remToPxPreview",
+  remToPxRatio: "teasim.remToPxRatio",
+  selectionStyle: "teasim.selectionStyle",
+  strictAnnotationMatch: "teasim.strictAnnotationMatch",
+  autocompleteMatchType: "teasim.autocomplete.matchType",
+  autocompleteStrict: "teasim.autocomplete.strict",
+  autocompleteMaxItems: "teasim.autocomplete.maxItems",
 }
 
 export interface ConfigShorthandTypeMap {
@@ -113,159 +113,159 @@ export interface ConfigItem<T extends keyof ConfigKeyTypeMap> {
 
 
 /**
- * Configs map registered by `billgo.@teasim/vscode`
+ * Configs map registered by `yiqilaitech.@teasim/vscode`
  */
 export const configs = {
   /**
-   * Disable the UnoCSS extension
-   * @key `unocss.disable`
+   * Disable the Teasim extension
+   * @key `teasim.disable`
    * @default `false`
    * @type `boolean`
    */
   disable: {
-    key: "unocss.disable",
+    key: "teasim.disable",
     default: false,
-  } as ConfigItem<"unocss.disable">,
+  } as ConfigItem<"teasim.disable">,
   /**
    *
-   * @key `unocss.languageIds`
+   * @key `teasim.languageIds`
    * @default `undefined`
    * @type `array`
    */
   languageIds: {
-    key: "unocss.languageIds",
+    key: "teasim.languageIds",
     default: undefined,
-  } as ConfigItem<"unocss.languageIds">,
+  } as ConfigItem<"teasim.languageIds">,
   /**
-   * Project root that contains the UnoCSS configuration file
-   * @key `unocss.root`
+   * Project root that contains the Teasim configuration file
+   * @key `teasim.root`
    * @default `undefined`
    * @type `array,string`
    */
   root: {
-    key: "unocss.root",
+    key: "teasim.root",
     default: undefined,
-  } as ConfigItem<"unocss.root">,
+  } as ConfigItem<"teasim.root">,
   /**
    * Directory of files to be detected
-   * @key `unocss.include`
+   * @key `teasim.include`
    * @default `undefined`
    * @type `array,string`
    */
   include: {
-    key: "unocss.include",
+    key: "teasim.include",
     default: undefined,
-  } as ConfigItem<"unocss.include">,
+  } as ConfigItem<"teasim.include">,
   /**
    * Directory of files not to be detected
-   * @key `unocss.exclude`
+   * @key `teasim.exclude`
    * @default `undefined`
    * @type `array,string`
    */
   exclude: {
-    key: "unocss.exclude",
+    key: "teasim.exclude",
     default: undefined,
-  } as ConfigItem<"unocss.exclude">,
+  } as ConfigItem<"teasim.exclude">,
   /**
    * Enable/disable underline decoration for class names
-   * @key `unocss.underline`
+   * @key `teasim.underline`
    * @default `true`
    * @type `boolean`
    */
   underline: {
-    key: "unocss.underline",
+    key: "teasim.underline",
     default: true,
-  } as ConfigItem<"unocss.underline">,
+  } as ConfigItem<"teasim.underline">,
   /**
    * Enable/disable color preview decorations
-   * @key `unocss.colorPreview`
+   * @key `teasim.colorPreview`
    * @default `true`
    * @type `boolean`
    */
   colorPreview: {
-    key: "unocss.colorPreview",
+    key: "teasim.colorPreview",
     default: true,
-  } as ConfigItem<"unocss.colorPreview">,
+  } as ConfigItem<"teasim.colorPreview">,
   /**
    * Radius for color preview
-   * @key `unocss.colorPreviewRadius`
+   * @key `teasim.colorPreviewRadius`
    * @default `"50%"`
    * @type `string`
    */
   colorPreviewRadius: {
-    key: "unocss.colorPreviewRadius",
+    key: "teasim.colorPreviewRadius",
     default: "50%",
-  } as ConfigItem<"unocss.colorPreviewRadius">,
+  } as ConfigItem<"teasim.colorPreviewRadius">,
   /**
    * Enable/disable rem to px preview in hover
-   * @key `unocss.remToPxPreview`
+   * @key `teasim.remToPxPreview`
    * @default `true`
    * @type `boolean`
    */
   remToPxPreview: {
-    key: "unocss.remToPxPreview",
+    key: "teasim.remToPxPreview",
     default: true,
-  } as ConfigItem<"unocss.remToPxPreview">,
+  } as ConfigItem<"teasim.remToPxPreview">,
   /**
    * Ratio of rem to px
-   * @key `unocss.remToPxRatio`
+   * @key `teasim.remToPxRatio`
    * @default `16`
    * @type `number`
    */
   remToPxRatio: {
-    key: "unocss.remToPxRatio",
+    key: "teasim.remToPxRatio",
     default: 16,
-  } as ConfigItem<"unocss.remToPxRatio">,
+  } as ConfigItem<"teasim.remToPxRatio">,
   /**
    * Enable/disable selection style decorations
-   * @key `unocss.selectionStyle`
+   * @key `teasim.selectionStyle`
    * @default `true`
    * @type `boolean`
    */
   selectionStyle: {
-    key: "unocss.selectionStyle",
+    key: "teasim.selectionStyle",
     default: true,
-  } as ConfigItem<"unocss.selectionStyle">,
+  } as ConfigItem<"teasim.selectionStyle">,
   /**
    * Be strict about where to show annotations
-   * @key `unocss.strictAnnotationMatch`
+   * @key `teasim.strictAnnotationMatch`
    * @default `false`
    * @type `boolean`
    */
   strictAnnotationMatch: {
-    key: "unocss.strictAnnotationMatch",
+    key: "teasim.strictAnnotationMatch",
     default: false,
-  } as ConfigItem<"unocss.strictAnnotationMatch">,
+  } as ConfigItem<"teasim.strictAnnotationMatch">,
   /**
    * The matching type for autocomplete
-   * @key `unocss.autocomplete.matchType`
+   * @key `teasim.autocomplete.matchType`
    * @default `"prefix"`
    * @type `string`
    */
   autocompleteMatchType: {
-    key: "unocss.autocomplete.matchType",
+    key: "teasim.autocomplete.matchType",
     default: "prefix",
-  } as ConfigItem<"unocss.autocomplete.matchType">,
+  } as ConfigItem<"teasim.autocomplete.matchType">,
   /**
    * Be strict about where to show autocomplete
-   * @key `unocss.autocomplete.strict`
+   * @key `teasim.autocomplete.strict`
    * @default `false`
    * @type `boolean`
    */
   autocompleteStrict: {
-    key: "unocss.autocomplete.strict",
+    key: "teasim.autocomplete.strict",
     default: false,
-  } as ConfigItem<"unocss.autocomplete.strict">,
+  } as ConfigItem<"teasim.autocomplete.strict">,
   /**
    * The maximum number of items to show in autocomplete
-   * @key `unocss.autocomplete.maxItems`
+   * @key `teasim.autocomplete.maxItems`
    * @default `1000`
    * @type `number`
    */
   autocompleteMaxItems: {
-    key: "unocss.autocomplete.maxItems",
+    key: "teasim.autocomplete.maxItems",
     default: 1000,
-  } as ConfigItem<"unocss.autocomplete.maxItems">,
+  } as ConfigItem<"teasim.autocomplete.maxItems">,
 }
 
 export interface ScopedConfigKeyTypeMap {
@@ -287,7 +287,7 @@ export interface ScopedConfigKeyTypeMap {
 }
 
 export const scopedConfigs = {
-  scope: "unocss",
+  scope: "teasim",
   defaults: {
     "disable": false,
     "languageIds": undefined,
@@ -308,7 +308,7 @@ export const scopedConfigs = {
 }
 
 export interface NestedConfigs {
-  "unocss": {
+  "teasim": {
     "disable": boolean,
     "languageIds": (string[] | undefined),
     "root": (string[] | string | undefined),

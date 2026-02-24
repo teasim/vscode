@@ -12,7 +12,7 @@
       "outFiles": [
         "${workspaceFolder}/dist/**/*.cjs"
       ],
-      "preLaunchTask": "npm: start"
+      "preLaunchTask": "npm: develop"
     }
   ]
 }
