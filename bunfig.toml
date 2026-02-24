@@ -1,5 +1,10 @@
+[install]
+saveTextLockfile = false
+registry = { token = "$NPM_TOKEN",url = "https://registry.npmjs.org" }
+
 [install.scopes]
 teasim = { token = "$GIT_TOKEN", url = "https://npm.pkg.github.com" }
+rdfkit = { token = "$GIT_TOKEN", url = "https://npm.pkg.github.com" }
 
 [test]
 preload = "./tests/setupTests.tsx"

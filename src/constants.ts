@@ -1,26 +1,2 @@
-export const defaultLanguageIds = [
-  'erb',
-  'haml',
-  'hbs',
-  'html',
-  'css',
-  'postcss',
-  'javascript',
-  'javascriptreact',
-  'markdown',
-  'ejs',
-  'php',
-  'svelte',
-  'typescript',
-  'typescriptreact',
-  'vue-html',
-  'vue',
-  'sass',
-  'scss',
-  'less',
-  'stylus',
-  'astro',
-  'rust',
-  'marko',
-]
-export const delimiters = ['-', ':', ' ', '"', '\'']
+export const defaultLanguageIds = ["erb", "haml", "hbs", "html", "css", "postcss", "javascript", "javascriptreact", "markdown", "ejs", "php", "svelte", "typescript", "typescriptreact", "vue-html", "vue", "sass", "scss", "less", "stylus", "astro", "rust", "marko"];
+export const delimiters = ["-", ":", " ", '"', "'"];

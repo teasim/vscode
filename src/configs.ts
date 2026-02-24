@@ -1,64 +1,55 @@
-import type { ConfigurationScope, Disposable } from 'vscode'
-import type { ConfigShorthandTypeMap } from './generated/meta'
-import { languages, window, workspace } from 'vscode'
-import { defaultLanguageIds } from './constants'
-import { configs } from './generated/meta'
+import type { ConfigurationScope, Disposable } from "vscode";
+import { languages, window, workspace } from "vscode";
+import { defaultLanguageIds } from "./constants";
+import type { ConfigShorthandTypeMap } from "./generated/meta";
+import { configs } from "./generated/meta";
 
 export function getConfig(scope?: ConfigurationScope): ConfigShorthandTypeMap & {
-  watchChanged: (keys: (keyof ConfigShorthandTypeMap)[], callback: () => void) => Disposable
+  watchChanged: (keys: (keyof ConfigShorthandTypeMap)[], callback: () => void) => Disposable;
 } {
   function watchChanged(keys: (keyof ConfigShorthandTypeMap)[], callback: () => void) {
-    const fullKeys = keys.map(key => configs[key].key)
+    const fullKeys = keys.map((key) => configs[key].key);
     return workspace.onDidChangeConfiguration((e) => {
-      if (fullKeys.some(key => e.affectsConfiguration(key, scope))) {
-        callback()
+      if (fullKeys.some((key) => e.affectsConfiguration(key, scope))) {
+        callback();
       }
-    })
+    });
   }
 
   const object = {
     watchChanged,
-  } as any
+  } as any;
 
-  const config = workspace.getConfiguration(undefined, scope)
+  const config = workspace.getConfiguration(undefined, scope);
 
   for (const [key, value] of Object.entries(configs) as any) {
     Object.defineProperty(object, key, {
       get() {
-        return config.get(value.key, value.default)
+        return config.get(value.key, value.default);
       },
-    })
+    });
   }
 
-  return object
+  return object;
 }
 
 async function validateLanguages(targets: string[], allLanguages: string[]) {
-  const invalidLanguages: string[] = []
+  const invalidLanguages: string[] = [];
   const validLanguages = targets.filter((language) => {
     if (!allLanguages.includes(language)) {
-      invalidLanguages.push(language)
-      return false
+      invalidLanguages.push(language);
+      return false;
     }
-    return true
-  })
-  if (invalidLanguages.length)
-    window.showWarningMessage(`These language configurations are illegal: ${invalidLanguages.join(',')}`)
+    return true;
+  });
+  if (invalidLanguages.length) window.showWarningMessage(`These language configurations are illegal: ${invalidLanguages.join(",")}`);
 
-  return validLanguages
+  return validLanguages;
 }
 
 export async function getLanguageIds() {
-  const allLanguages = await languages.getLanguages()
-  const languagesIds: string[] = getConfig().languageIds || []
+  const allLanguages = await languages.getLanguages();
+  const languagesIds: string[] = getConfig().languageIds || [];
 
-  return Array.from(
-    new Set(
-      [
-        ...defaultLanguageIds,
-        ...await validateLanguages(languagesIds, allLanguages),
-      ]
-        .filter(i => allLanguages.includes(i)),
-    ),
-  )
+  return Array.from(new Set([...defaultLanguageIds, ...(await validateLanguages(languagesIds, allLanguages))].filter((i) => allLanguages.includes(i))));
 }
