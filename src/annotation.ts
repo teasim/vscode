@@ -1,11 +1,11 @@
 import path from "node:path";
 import type { DecorationOptions, Disposable, TextEditor } from "vscode";
 import { DecorationRangeBehavior, MarkdownString, Range, window, workspace } from "vscode";
-import { INCLUDE_COMMENT_IDE } from "#integration/constants";
-import { isCssId } from "#integration/utils";
 import { getConfig } from "./configs";
 import type { ContextLoader } from "./contextLoader";
 import { getMatchedPositionsFromDoc } from "./getMatched";
+import { INCLUDE_COMMENT_IDE } from "./integration/constants";
+import { isCssId } from "./integration/utils";
 import { log } from "./log";
 import { getColorString, getPrettiedMarkdown, throttle } from "./utils";
 
@@ -104,7 +104,7 @@ export async function registerAnnotations(loader: ContextLoader) {
 
       const ranges: DecorationOptions[] = (
         await Promise.all(
-          positions.map(async (i): Promise<DecorationOptions> => {
+          positions.map(async (i: any): Promise<DecorationOptions> => {
             try {
               const md = await getPrettiedMarkdown(ctx!.uno, isAttributify ? [i[2], `[${i[2]}=""]`] : i[2], remToPxRatio);
 
@@ -172,6 +172,7 @@ export async function registerAnnotations(loader: ContextLoader) {
 
   loader.events.on("unload", async () => {
     reset(window.activeTextEditor);
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: ignore
     disposals.forEach((disposal) => disposal.dispose());
   });
 

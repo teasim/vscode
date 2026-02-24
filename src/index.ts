@@ -5,10 +5,10 @@ import type { FilterPattern } from "unplugin-utils";
 import { createFilter } from "unplugin-utils";
 import type { ExtensionContext, StatusBarItem } from "vscode";
 import { commands, Position, StatusBarAlignment, window, workspace } from "vscode";
-import { defaultPipelineExclude, defaultPipelineInclude } from "#integration/defaults";
 import { getConfig } from "./configs";
 import { ContextLoader } from "./contextLoader";
 import { commands as commandNames, displayName, version } from "./generated/meta";
+import { defaultPipelineExclude, defaultPipelineInclude } from "./integration/defaults";
 import { log } from "./log";
 
 const skipMap = {

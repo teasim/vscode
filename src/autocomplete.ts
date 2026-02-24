@@ -3,10 +3,10 @@ import { createAutocomplete } from "@unocss/autocomplete";
 import type { SuggestResult, UnocssPluginContext, UnoGenerator } from "@unocss/core";
 import type { CompletionItemProvider, Disposable, Position, TextDocument } from "vscode";
 import { CompletionItem, CompletionItemKind, CompletionList, languages, MarkdownString, Range, window } from "vscode";
-import { isCssId } from "#integration/utils";
 import { getConfig, getLanguageIds } from "./configs";
 import { delimiters } from "./constants";
 import type { ContextLoader } from "./contextLoader";
+import { isCssId } from "./integration/utils";
 import { log } from "./log";
 import { getColorString, getCSS, getPrettiedCSS, getPrettiedMarkdown, isVueWithPug, shouldProvideAutocomplete } from "./utils";
 
