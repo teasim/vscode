@@ -3,7 +3,7 @@
   "publisher": "yiqilaitech",
   "displayName": "Teasim (Official)",
   "name": "teasim",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A Visual Studio Code extension that provides an IDE-grade support for Teasim projects.",
   "author": "Billgo <hi@billgo.me>",
   "license": "MIT",
@@ -156,7 +156,7 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "bun run build",
+    "prepublishOnly": "bun run update && bun run build",
     "build": "rimraf dist && tsdown",
     "develop": "esno ./scripts/develop.ts && tsdown --watch src",
     "prepare": "bun run update",

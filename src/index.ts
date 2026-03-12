@@ -18,29 +18,23 @@ const skipMap = {
 };
 
 export async function activate(ext: ExtensionContext) {
-  log.appendLine(`⚪️ UnoCSS for VS Code v${version}\n`);
-
-  const projectPath = workspace.workspaceFolders?.[0].uri.fsPath;
-  if (!projectPath) {
-    log.appendLine("➖ No active workspace found, UnoCSS is disabled");
-    return;
-  }
-
-  const config = getConfig();
-  if (config.disable) {
-    log.appendLine("➖ Disabled by configuration");
-    return;
-  }
+  log.appendLine(`⚪️ Teasim for VS Code v${version}\n`);
 
   const status = window.createStatusBarItem(StatusBarAlignment.Right, 200);
   status.text = displayName;
 
-  const root = config.root;
-
-  const loader = await rootRegister(ext, Array.isArray(root) && !root.length ? [projectPath] : root ? toArray(root).map((r) => path.resolve(projectPath, r)) : [projectPath], status);
+  let loader: ContextLoader | undefined;
 
   ext.subscriptions.push(
     commands.registerCommand(commandNames.reload, async () => {
+      window.showInformationMessage("hello teasim");
+      log.appendLine("hello teasim");
+
+      if (!loader) {
+        log.appendLine("➖ Reload skipped because no project context is active.");
+        return;
+      }
+
       log.appendLine("🔁 Reloading...");
       await loader.reload();
       log.appendLine("✅ Reloaded.");
@@ -60,6 +54,22 @@ export async function activate(ext: ExtensionContext) {
       });
     }),
   );
+
+  const projectPath = workspace.workspaceFolders?.[0].uri.fsPath;
+  if (!projectPath) {
+    log.appendLine("➖ No active workspace found, Teasim is disabled");
+    return;
+  }
+
+  const config = getConfig();
+  if (config.disable) {
+    log.appendLine("➖ Disabled by configuration");
+    return;
+  }
+
+  const root = config.root;
+
+  loader = await rootRegister(ext, Array.isArray(root) && !root.length ? [projectPath] : root ? toArray(root).map((r) => path.resolve(projectPath, r)) : [projectPath], status);
 }
 
 async function rootRegister(ext: ExtensionContext, root: string[], status: StatusBarItem) {

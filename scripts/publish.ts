@@ -18,6 +18,7 @@ async function publish() {
   pkg.name = "teasim";
   await fs.writeJSON(pkgPath, pkg, { spaces: 2 });
 
+  await execa("bun", ["run", "update"], { cwd: root, stdio: "inherit" });
   await execa("bun", ["run", "build"], { cwd: root, stdio: "inherit" });
 
   try {

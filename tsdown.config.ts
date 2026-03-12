@@ -6,11 +6,13 @@ import { defineConfig } from "tsdown";
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  external: ["vscode", "consola"],
   format: ["cjs"],
   shims: true,
   clean: true,
-  inlineOnly: false,
+  deps: {
+    neverBundle: ["vscode", "consola"],
+    onlyBundle: false,
+  },
   outputOptions: {
     codeSplitting: false,
   },
