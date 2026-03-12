@@ -119,7 +119,7 @@ You can extend support using `teasim.languageIds`.
 For performance, utility detection in JavaScript/TypeScript defaults to:
 
 - `*.jsx` and `*.tsx`
-- `*.props.js` and `*.props.ts`
+- `*.props.js`, `*.props.ts`, `*.shortcuts.js`, `*.shortcuts.ts`
 
 If you need hover/annotation in other `.js` / `.ts` files, add an include annotation (`@unocss-include`) or widen `content.pipeline.include` in your UnoCSS config.
 
@@ -153,7 +153,7 @@ bun run update
 ## Troubleshooting
 
 1. No hover or annotation appears
-Check that your project config is detected (`uno.config.*`/`unocss.config.*`), then run `Teasim: Reload Teasim`. For JS/TS files, also confirm the filename matches the default scope (`*.jsx`, `*.tsx`, `*.props.js`, `*.props.ts`) or explicitly include the file.
+Check that your project config is detected (`uno.config.*`/`unocss.config.*`), then run `Teasim: Reload Teasim`. For JS/TS files, also confirm the filename matches the default scope (`*.jsx`, `*.tsx`, `*.props.js`, `*.props.ts`, `*.shortcuts.js`, `*.shortcuts.ts`) or explicitly include the file.
 
 2. Suggestions are too noisy
 Enable `teasim.autocomplete.strict` and `teasim.strictAnnotationMatch`.
