@@ -10,11 +10,14 @@ export default defineConfig({
   shims: true,
   clean: true,
   deps: {
-    neverBundle: ["vscode", "consola"],
+    neverBundle: ["vscode"],
     onlyBundle: false,
   },
   outputOptions: {
     codeSplitting: false,
+  },
+  define: {
+    "import.meta": "{}",
   },
   onSuccess: async () => {
     // Copy jiti's babel.cjs to dist/babel.cjs as workaround for https://github.com/unocss/unocss/issues/4944
