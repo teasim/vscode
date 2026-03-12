@@ -10,7 +10,7 @@ import { registerAutoComplete } from "./autocomplete";
 import { registerDocumentCacheCleaner } from "./getMatched";
 import { createContext } from "./integration/context";
 import { isCssId } from "./integration/utils";
-import { log } from "./log";
+import { logger } from "./logger";
 import { registerSelectionStyle } from "./selectionStyle";
 import { registerUsageProvider } from "./usageProvider";
 import { isSubdir } from "./utils";
@@ -122,8 +122,8 @@ export class ContextLoader {
     }
 
     const load = async () => {
-      log.appendLine("\n-----------");
-      log.appendLine(`🛠 Resolving config for ${dir}`);
+      logger.appendLine("\n-----------");
+      logger.appendLine(`🛠 Resolving config for ${dir}`);
 
       // @ts-expect-error support global utils
       globalThis.defineNuxtConfig = (config) => config;
@@ -152,8 +152,8 @@ export class ContextLoader {
       try {
         sources = (await context.ready).sources;
       } catch (e: any) {
-        log.appendLine(`⚠️ Error on loading config. Config directory: ${dir}`);
-        log.appendLine(String(e.stack ?? e));
+        logger.appendLine(`⚠️ Error on loading config. Config directory: ${dir}`);
+        logger.appendLine(String(e.stack ?? e));
         console.error(e);
         return null;
       }
@@ -185,12 +185,12 @@ export class ContextLoader {
 
       const uno = await context.uno;
 
-      log.appendLine(`🛠 New configuration loaded from\n${sources.map((s) => `  - ${s}`).join("\n")}`);
-      log.appendLine(`ℹ️ ${uno.config.presets.length} presets, ${uno.config.rulesSize} rules, ${uno.config.shortcuts.length} shortcuts, ${uno.config.variants.length} variants, ${uno.config.transformers?.length || 0} transformers loaded`);
+      logger.appendLine(`🛠 New configuration loaded from\n${sources.map((s) => `  - ${s}`).join("\n")}`);
+      logger.appendLine(`ℹ️ ${uno.config.presets.length} presets, ${uno.config.rulesSize} rules, ${uno.config.shortcuts.length} shortcuts, ${uno.config.variants.length} variants, ${uno.config.transformers?.length || 0} transformers loaded`);
 
       if (!sources.some((i) => unoConfigRE.test(i))) {
-        log.appendLine("💡 To have the best IDE experience, it's recommended to move UnoCSS configurations into a standalone `uno.config.ts` file at the root of your project.");
-        log.appendLine("👉 Learn more at https://unocss.dev/guide/config-file");
+        logger.appendLine("💡 To have the best IDE experience, it's recommended to move UnoCSS configurations into a standalone `uno.config.ts` file at the root of your project.");
+        logger.appendLine("👉 Learn more at https://unocss.dev/guide/config-file");
       }
 
       return context;
@@ -201,7 +201,7 @@ export class ContextLoader {
     this.fileContextCache.clear();
     this.events.emit("reload");
 
-    log.appendLine(
+    logger.appendLine(
       `🗂️ Enabled context: ${
         Array.from(this.contextsMap.entries())
           .filter((i) => i[1])

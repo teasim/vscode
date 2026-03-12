@@ -6,7 +6,7 @@ import type { ContextLoader } from "./contextLoader";
 import { getMatchedPositionsFromDoc } from "./getMatched";
 import { INCLUDE_COMMENT_IDE } from "./integration/constants";
 import { isCssId } from "./integration/utils";
-import { log } from "./log";
+import { logger } from "./logger";
 import { getColorString, getPrettiedMarkdown, throttle } from "./utils";
 
 export async function registerAnnotations(loader: ContextLoader) {
@@ -29,10 +29,10 @@ export async function registerAnnotations(loader: ContextLoader) {
         if (!ctx.getConfigFileList().includes(id)) return;
         try {
           await ctx.reloadConfig();
-          log.appendLine(`🛠 Config reloaded by ${path.relative(loader.cwd, doc.uri.fsPath)}`);
+          logger.appendLine(`🛠 Config reloaded by ${path.relative(loader.cwd, doc.uri.fsPath)}`);
         } catch (e: any) {
-          log.appendLine("⚠️ Error on loading config");
-          log.appendLine(String(e.stack ?? e));
+          logger.appendLine("⚠️ Error on loading config");
+          logger.appendLine(String(e.stack ?? e));
         }
       }
     }),
@@ -124,8 +124,8 @@ export async function registerAnnotations(loader: ContextLoader) {
                 },
               };
             } catch (e: any) {
-              log.appendLine(`⚠️ Failed to parse ${i[2]}`);
-              log.appendLine(String(e.stack ?? e));
+              logger.appendLine(`⚠️ Failed to parse ${i[2]}`);
+              logger.appendLine(String(e.stack ?? e));
               return undefined!;
             }
           }),
@@ -146,8 +146,8 @@ export async function registerAnnotations(loader: ContextLoader) {
       loader.status.tooltip = new MarkdownString(`${result.matched.size} utilities used in this file`);
       loader.status.show();
     } catch (e: any) {
-      log.appendLine("⚠️ Error on annotation");
-      log.appendLine(String(e.stack ?? e));
+      logger.appendLine("⚠️ Error on annotation");
+      logger.appendLine(String(e.stack ?? e));
     }
   }
 

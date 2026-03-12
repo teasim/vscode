@@ -7,7 +7,7 @@ import { getConfig, getLanguageIds } from "./configs";
 import { delimiters } from "./constants";
 import type { ContextLoader } from "./contextLoader";
 import { isCssId } from "./integration/utils";
-import { log } from "./log";
+import { logger } from "./logger";
 import { getColorString, getCSS, getPrettiedCSS, getPrettiedMarkdown, isVueWithPug, shouldProvideAutocomplete } from "./utils";
 
 class UnoCompletionItem extends CompletionItem {
@@ -242,7 +242,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
     });
     if (autocomplete.errorCache.size > 0) {
       for (const error of Array.from(autocomplete.errorCache.values()).flat()) {
-        log.appendLine(error.toString());
+        logger.appendLine(error.toString());
       }
     }
 
@@ -342,7 +342,7 @@ export async function registerAutoComplete(loader: ContextLoader) {
 
         if (!result) return;
 
-        // log.appendLine(`🤖 ${id} | ${result.suggestions.slice(0, 10).map(v => `[${v[0]}, ${v[1]}]`).join(', ')}`)
+        // logger.appendLine(`🤖 ${id} | ${result.suggestions.slice(0, 10).map(v => `[${v[0]}, ${v[1]}]`).join(', ')}`)
 
         if (!result.suggestions.length) return;
 
@@ -369,8 +369,8 @@ export async function registerAutoComplete(loader: ContextLoader) {
 
         return new CompletionList(completionItems, true);
       } catch (e: any) {
-        log.appendLine("⚠️ Error on getting autocompletion items");
-        log.appendLine(String(e.stack ?? e));
+        logger.appendLine("⚠️ Error on getting autocompletion items");
+        logger.appendLine(String(e.stack ?? e));
         return null;
       }
     },

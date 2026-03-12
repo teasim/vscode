@@ -6,7 +6,7 @@ import { MarkdownString, Position, Range, window } from "vscode";
 import { getConfig } from "./configs";
 import type { ContextLoader } from "./contextLoader";
 import { getMatchedPositionsFromCode } from "./integration/match-positions";
-import { log } from "./log";
+import { logger } from "./logger";
 import { addRemToPxComment, throttle } from "./utils";
 
 export async function registerSelectionStyle(loader: ContextLoader) {
@@ -82,8 +82,8 @@ export async function registerSelectionStyle(loader: ContextLoader) {
         editor.textEditor.setDecorations(integrationDecoration, []);
       }
     } catch (e: any) {
-      log.appendLine("⚠️ Error on selectionStyle");
-      log.appendLine(String(e.stack ?? e));
+      logger.appendLine("⚠️ Error on selectionStyle");
+      logger.appendLine(String(e.stack ?? e));
     }
   }
 

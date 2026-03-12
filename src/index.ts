@@ -9,7 +9,7 @@ import { getConfig } from "./configs";
 import { ContextLoader } from "./contextLoader";
 import { commands as commandNames, displayName, version } from "./generated/meta";
 import { defaultPipelineExclude, defaultPipelineInclude } from "./integration/defaults";
-import { log } from "./log";
+import { logger } from "./logger";
 
 const skipMap = {
   "<!-- @unocss-skip -->": ["<!-- @unocss-skip-start -->\n", "\n<!-- @unocss-skip-end -->"],
@@ -18,7 +18,7 @@ const skipMap = {
 };
 
 export async function activate(ext: ExtensionContext) {
-  log.appendLine(`⚪️ Teasim for VS Code v${version}\n`);
+  logger.appendLine(`⚪️ Teasim for VS Code v${version}\n`);
 
   const status = window.createStatusBarItem(StatusBarAlignment.Right, 200);
   status.text = displayName;
@@ -27,17 +27,24 @@ export async function activate(ext: ExtensionContext) {
 
   ext.subscriptions.push(
     commands.registerCommand(commandNames.reload, async () => {
-      window.showInformationMessage("hello teasim");
-      log.appendLine("hello teasim");
+      try {
+        window.showInformationMessage("Reload Teasim");
+        logger.appendLine("Reload Teasim");
 
-      if (!loader) {
-        log.appendLine("➖ Reload skipped because no project context is active.");
-        return;
+        if (!loader) {
+          logger.appendLine("➖ Reload skipped because no project context is active.");
+          return;
+        }
+
+        logger.appendLine("🔁 Reloading...");
+        await loader.reload();
+        logger.appendLine("✅ Reloaded.");
+      } catch (error: any) {
+        const message = String(error?.message ?? error);
+        logger.appendLine("⚠️ Reload failed");
+        logger.appendLine(String(error?.stack ?? error));
+        window.showErrorMessage(`Teasim reload failed: ${message}`);
       }
-
-      log.appendLine("🔁 Reloading...");
-      await loader.reload();
-      log.appendLine("✅ Reloaded.");
     }),
     commands.registerCommand(commandNames.insertSkipAnnotation, async () => {
       const activeTextEditor = window.activeTextEditor;
@@ -57,13 +64,13 @@ export async function activate(ext: ExtensionContext) {
 
   const projectPath = workspace.workspaceFolders?.[0].uri.fsPath;
   if (!projectPath) {
-    log.appendLine("➖ No active workspace found, Teasim is disabled");
+    logger.appendLine("➖ No active workspace found, Teasim is disabled");
     return;
   }
 
   const config = getConfig();
   if (config.disable) {
-    log.appendLine("➖ Disabled by configuration");
+    logger.appendLine("➖ Disabled by configuration");
     return;
   }
 
@@ -73,7 +80,7 @@ export async function activate(ext: ExtensionContext) {
 }
 
 async function rootRegister(ext: ExtensionContext, root: string[], status: StatusBarItem) {
-  log.appendLine("📂 roots search mode.");
+  logger.appendLine("📂 roots search mode.");
 
   const config = getConfig();
 
@@ -138,7 +145,7 @@ async function rootRegister(ext: ExtensionContext, root: string[], status: Statu
     registerUnocss();
     ext.subscriptions.push(window.onDidChangeActiveTextEditor(() => registerUnocss()));
   } catch (e: any) {
-    log.appendLine(String(e.stack ?? e));
+    logger.appendLine(String(e.stack ?? e));
   }
 
   return ctx;
