@@ -16,9 +16,6 @@ export default defineConfig({
   outputOptions: {
     codeSplitting: false,
   },
-  define: {
-    "import.meta": "{}",
-  },
   onSuccess: async () => {
     // Copy jiti's babel.cjs to dist/babel.cjs as workaround for https://github.com/unocss/unocss/issues/4944
     // jiti has hardcoded: require('../dist/babel.cjs') which esbuild cannot resolve correctly
