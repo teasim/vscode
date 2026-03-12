@@ -91,7 +91,7 @@
         },
         "teasim.colorPreview": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "scope": "language-overridable",
           "description": "Enable/disable color preview decorations"
         },

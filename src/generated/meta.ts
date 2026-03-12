@@ -183,12 +183,12 @@ export const configs = {
   /**
    * Enable/disable color preview decorations
    * @key `teasim.colorPreview`
-   * @default `true`
+   * @default `false`
    * @type `boolean`
    */
   colorPreview: {
     key: "teasim.colorPreview",
-    default: true,
+    default: false,
   } as ConfigItem<"teasim.colorPreview">,
   /**
    * Radius for color preview
@@ -310,7 +310,7 @@ export const scopedConfigs = {
     "include": undefined,
     "exclude": undefined,
     "underline": true,
-    "colorPreview": true,
+    "colorPreview": false,
     "colorPreviewRadius": "50%",
     "remToPxPreview": true,
     "remToPxRatio": 16,
