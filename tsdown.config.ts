@@ -6,12 +6,13 @@ import { defineConfig } from "tsdown";
 
 export default defineConfig({
   entry: ["src/index.ts"],
+  external: ["vscode", "consola"],
   format: ["cjs"],
   shims: true,
   clean: true,
-  deps: {
-    neverBundle: ["vscode", "consola"],
-    onlyBundle: false,
+  inlineOnly: false,
+  outputOptions: {
+    codeSplitting: false,
   },
   onSuccess: async () => {
     // Copy jiti's babel.cjs to dist/babel.cjs as workaround for https://github.com/unocss/unocss/issues/4944

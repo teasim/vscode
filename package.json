@@ -3,7 +3,7 @@
   "publisher": "yiqilaitech",
   "displayName": "Teasim (Official)",
   "name": "teasim",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A Visual Studio Code extension that provides an IDE-grade support for Teasim projects.",
   "author": "Billgo <hi@billgo.me>",
   "license": "MIT",
