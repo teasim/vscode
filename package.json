@@ -20,7 +20,7 @@
   "main": "./dist/index.cjs",
   "icon": "logo.png",
   "engines": {
-    "vscode": "^1.109.0"
+    "vscode": "^1.110.0"
   },
   "activationEvents": [
     "onStartupFinished"
