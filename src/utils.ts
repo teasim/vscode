@@ -55,14 +55,82 @@ export function addRemToPxComment(str?: string, remToPixel = 16) {
   return output.join("");
 }
 
-export async function getPrettiedCSS(uno: UnoGenerator, util: string | string[], remToPxRatio: number) {
-  const result = await uno.generate(new Set(toArray(util)), { preflights: false, safelist: false });
-  const cssWithoutProperties = result.getLayers(undefined, ["properties"]);
-  const css = addRemToPxComment(cssWithoutProperties, remToPxRatio);
+const colorPropertyRE = /^(?:--[\w-]*(?:color|fill|stroke)[\w-]*|[\w-]*color|fill|stroke)$/i;
+const pureColorValueRE =
+  /^(?:(?:var|color-mix|rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|light-dark|contrast-color|device-cmyk)\(|#(?:[\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})\b|transparent\b|currentcolor\b)/i;
+
+function compactCSSValue(value: string) {
+  const hasSemicolon = value.trimEnd().endsWith(";");
+  const body = value
+    .replace(/;\s*$/, "")
+    .replace(/\s+/g, " ")
+    .replace(/\(\s+/g, "(")
+    .replace(/\s+\)/g, ")")
+    .replace(/\s*,\s*/g, ", ")
+    .trim();
+
+  return hasSemicolon ? `${body};` : body;
+}
+
+function isColorDeclaration(property: string, value: string) {
+  if (colorPropertyRE.test(property.trim())) return true;
+  return pureColorValueRE.test(value.trim());
+}
+
+function compactColorDeclarations(css: string) {
+  const lines = css.split("\n");
+  const output: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const match = line.match(/^(\s*)([-\w]+)\s*:\s*(.*)$/);
+    if (!match) {
+      output.push(line);
+      continue;
+    }
+
+    const [, indent, property, rest] = match;
+    if (rest.includes(";")) {
+      output.push(line);
+      continue;
+    }
+
+    const declaration = [rest];
+    let end = i;
+    while (end + 1 < lines.length) {
+      end++;
+      declaration.push(lines[end].trim());
+      if (lines[end].includes(";")) break;
+    }
+
+    const value = declaration.join(" ");
+    if (value.includes(";") && isColorDeclaration(property, value)) {
+      output.push(`${indent}${property}: ${compactCSSValue(value)}`);
+      i = end;
+      continue;
+    }
+
+    output.push(...lines.slice(i, end + 1));
+    i = end;
+  }
+
+  return output.join("\n");
+}
+
+export async function formatPreviewCSS(css: string) {
   const prettified = await prettier.format(css, {
     parser: "css",
     plugins: [parserCSS],
   });
+
+  return compactColorDeclarations(prettified);
+}
+
+export async function getPrettiedCSS(uno: UnoGenerator, util: string | string[], remToPxRatio: number) {
+  const result = await uno.generate(new Set(toArray(util)), { preflights: false, safelist: false });
+  const cssWithoutProperties = result.getLayers(undefined, ["properties"]);
+  const css = addRemToPxComment(cssWithoutProperties, remToPxRatio);
+  const prettified = await formatPreviewCSS(css);
 
   return {
     ...result,

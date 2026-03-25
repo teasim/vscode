@@ -1,13 +1,11 @@
 import { regexScopePlaceholder, TwoKeyMap } from "@unocss/core";
-import parserCSS from "prettier/parser-postcss";
-import prettier from "prettier/standalone";
 import type { TextEditorSelectionChangeEvent } from "vscode";
 import { MarkdownString, Position, Range, window } from "vscode";
 import { getConfig } from "./configs";
 import type { ContextLoader } from "./contextLoader";
 import { getMatchedPositionsFromCode } from "./integration/match-positions";
 import { logger } from "./logger";
-import { addRemToPxComment, throttle } from "./utils";
+import { addRemToPxComment, formatPreviewCSS, throttle } from "./utils";
 
 export async function registerSelectionStyle(loader: ContextLoader) {
   const config = getConfig();
@@ -64,10 +62,7 @@ export async function registerSelectionStyle(loader: ContextLoader) {
         })
         .join("\n");
 
-      const prettified = await prettier.format(css, {
-        parser: "css",
-        plugins: [parserCSS],
-      });
+      const prettified = await formatPreviewCSS(css);
 
       editor.textEditor.setDecorations(integrationDecoration, [
         {
